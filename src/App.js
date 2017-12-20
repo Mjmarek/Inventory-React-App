@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ProductDetail from './ProductDetail';
 
 class App extends Component {
   constructor() {
@@ -21,14 +22,15 @@ class App extends Component {
         headers: {
           Authorization: token
         }
-      }).then(listRes => listRes.json()).then(listRes => this.setState({productList: listRes}))
+      }).then(listRes => listRes.json())
+        .then(listRes => this.setState({productList: listRes, token}))
     })
   }
   render() {
     let contentDiv = "Loading...";
     if (this.state.productList) {
       contentDiv = <ul>
-        {this.state.productList.map(item => <li>{item.Number}</li>)}
+        {this.state.productList.map(item => <li key={item.ProductId} onClick={e => this.setState({currentItem: item.ProductId})} >{item.Number}</li>)}
       </ul>
     }
     return (
@@ -39,8 +41,9 @@ class App extends Component {
         </header>
         <h2><b>Product List</b></h2>
         <div>
-          {contentDiv}
+          {!this.state.currentItem && contentDiv}
         </div>
+        {this.state.currentItem && <ProductDetail selectedId={this.state.currentItem} token={this.state.token}/>}
       </div>
     );
   }
