@@ -25,9 +25,11 @@ class App extends Component {
     })
   }
   render() {
-    let contentDiv = "loading";
+    let contentDiv = "Loading...";
     if (this.state.productList) {
-      contentDiv = JSON.stringify(this.state.productList)
+      contentDiv = <ul>
+        {this.state.productList.map(item => <li>{item.Number}</li>)}
+      </ul>
     }
     return (
       <div className="App">
@@ -35,6 +37,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Inventory Management</h1>
         </header>
+        <h2><b>Product List</b></h2>
         <div>
           {contentDiv}
         </div>
